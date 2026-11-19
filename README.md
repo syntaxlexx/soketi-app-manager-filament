@@ -159,3 +159,69 @@ If you discover any security related issues, please email rahulhaque07@gmail.com
 ## License
 
 GNU General Public License v3.0. See [License File](LICENSE) for more information.
+
+## Caddy deployment example
+Here is a sample Caddy block
+
+`base.caddy`
+
+```caddy
+soketi.domain.com {
+	# apply security header
+  import ./security.conf
+  encode gzip zstd
+
+  reverse_proxy 127.0.0.1:8080 {
+		# keeps persistent WebSocket connections alive smoothly
+		flush_interval -1
+	}
+
+	# If CORS preflight (OPTIONS) requests hit Caddy directly
+	@options {
+		method OPTIONS
+	}
+
+	handle @options {
+		header Access-Control-Allow-Origin "*"
+		header Access-Control-Allow-Methods "GET, POST, OPTIONS"
+		header Access-Control-Allow-Headers "*"
+		respond 204
+	}
+
+  header {
+    Referrer-Policy strict-origin-when-cross-origin
+    X-Frame-Options SAMEORIGIN
+  }
+
+  log {
+    output file /var/log/caddy/soketi.log
+  }
+}
+```
+
+`security.conf`
+```conf
+header {
+    # keep referrer data off of HTTP connections
+    Referrer-Policy no-referrer-when-downgrade
+    # Referrer-Policy "strict-origin-when-cross-origin"
+
+    # enable HSTS
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Enable cross-site filter (XSS) and tell browser to block detected attacks
+    X-Xss-Protection "1; mode=block"
+
+    # disable clients from sniffing the media type
+    X-Content-Type-Options "nosniff"
+
+    # clickjacking protection
+    # X-Frame-Options "SAMEORIGIN"
+    # now the frame options is handled by Content-Security-Policy frame-ancestors
+
+    Content-Security-Policy "upgrade-insecure-requests; frame-ancestors 'self' https://responsivetesttool.com;"
+
+    # hide server name
+    -Server CustomServerName
+}
+```
