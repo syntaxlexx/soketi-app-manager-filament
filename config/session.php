@@ -198,4 +198,19 @@ return [
 
     'same_site' => 'lax',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Session Serialization
+    |--------------------------------------------------------------------------
+    |
+    | This value controls how session data is serialized before it is stored.
+    | "php" keeps existing sessions valid. "json" is safer against PHP object
+    | deserialization attacks, but switching to it logs every user out.
+    |
+    | Supported: "php", "json"
+    |
+    */
+
+    'serialization' => 'php',
+
 ];

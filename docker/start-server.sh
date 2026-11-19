@@ -15,7 +15,7 @@ if gosu soketi php artisan migrate --force -q; then
     echo "Migrating application database..."
 fi
 
-if gosu soketi php artisan db:seed; then
+if gosu soketi php artisan db:seed --force; then
     echo "Creating default admin user..."
 fi
 

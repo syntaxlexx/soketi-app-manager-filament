@@ -22,7 +22,7 @@ I invest a lot of time and effort in open-source. If you like this project, plea
 
 ## Requirements
 
-- PHP^8.3
+- PHP^8.5
 - Composer^2
 - MySQL^8|PostgreSQL^13.3
 - Redis^6
@@ -114,7 +114,7 @@ Follow the steps to deploy in [Coolify](https://coolify.io/) -
 - Create and deploy your preferred MySQL or PostgreSQL **database**, **redis** and **soketi** services.
 - Go to `Environment Variables` of Soketi App Manager service and fill out the variables except `APP_KEY`.
 - Click `Save` and `Deploy`.
-- After that go to terminal and run the followin -
+- After that go to terminal and run the following -
 ```bash
 # Keep the key for APP_KEY
 php artisan key:generate --show

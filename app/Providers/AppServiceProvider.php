@@ -10,6 +10,7 @@ use Filament\Support\Facades\FilamentView;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,8 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            $this->app['request']->server->set('HTTPS', 'on');
+        if (str_starts_with((string) config('app.url'), 'https://')) {
+            URL::forceScheme('https');
         }
 
         Model::unguard();
